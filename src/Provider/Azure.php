@@ -37,7 +37,7 @@ class Azure extends AbstractProvider
 
     public $defaultEndPointVersion = self::ENDPOINT_VERSION_1_0;
 
-    public $urlAPI = 'https://graph.windows.net/';
+    public $urlAPI = 'https://graph.microsoft.com/';
 
     public $resource = '';
 
@@ -88,7 +88,8 @@ class Azure extends AbstractProvider
         }
         if (!array_key_exists($version, $this->openIdConfiguration[$tenant])) {
             $versionInfix = $this->getVersionUriInfix($version);
-	          $openIdConfigurationUri = $this->urlLogin . $tenant . $versionInfix . '/.well-known/openid-configuration?appid=' . $this->clientId;
+            $appid = $version == self::ENDPOINT_VERSION_1_0 ? '?appid=' . $this->clientId : '';
+            $openIdConfigurationUri = $this->urlLogin . $tenant . $versionInfix . '/.well-known/openid-configuration' . $appid;
 
             $factory = $this->getRequestFactory();
             $request = $factory->getRequestWithOptions(
